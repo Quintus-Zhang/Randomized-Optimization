@@ -78,7 +78,6 @@ Commandline parameter(s):
 # print "MIMIC: " + str(ef.value(mimic.getOptimal()))
 
 
-
 def OptimedTrainer(ef, oa, optima):
     iters = 0
     cur_value = -1
