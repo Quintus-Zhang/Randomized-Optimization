@@ -2,6 +2,7 @@
 # This also prints the index of the points of the shortest route.
 # To make a plot of the route, write the points at these indexes
 # to a file and plot them in your favorite tool.
+
 import sys
 sys.path.append("/Users/Quintus/OneDrive/Code/python/omscs/machine learning/assignment 2/ABAGAIL/ABAGAIL.jar")
 import os
