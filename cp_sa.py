@@ -83,7 +83,6 @@ N_ITERS = 10001
 # for cool_fac in [0.9, 0.92, 0.94, 0.96, 0.98]:
 #     print cool_fac
 #     fit_hist = []
-#     time_hist = []
 #     for i in xrange(30):
 #         hcp = GenericHillClimbingProblem(ef, odd, nf)
 #         sa = SimulatedAnnealing(1E12, cool_fac, hcp)
@@ -96,7 +95,6 @@ N_ITERS = 10001
 
 for power in range(1, 12, 2):
     fit_hist = []
-    time_hist = []
     for i in xrange(30):
         hcp = GenericHillClimbingProblem(ef, odd, nf)
         sa = SimulatedAnnealing(10**power, 0.94, hcp)

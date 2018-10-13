@@ -122,7 +122,7 @@ fit_hist = []
 time_hist = []
 for i in xrange(30):
     gap = GenericGeneticAlgorithmProblem(ef, odd, mf, cf)
-    ga = StandardGeneticAlgorithm(300, 150, 30, gap)
+    ga = StandardGeneticAlgorithm(300, 30, 90, gap)
 
     fh, th = FixedIterTrainer(ef, ga, N_ITERS)
     fit_hist.append(fh)

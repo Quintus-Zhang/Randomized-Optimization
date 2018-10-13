@@ -1,8 +1,13 @@
+# traveling salesman algorithm implementation in jython
+# This also prints the index of the points of the shortest route.
+# To make a plot of the route, write the points at these indexes
+# to a file and plot them in your favorite tool.
 import sys
 sys.path.append("/Users/Quintus/OneDrive/Code/python/omscs/machine learning/assignment 2/ABAGAIL/ABAGAIL.jar")
 import os
 import time
 import csv
+
 
 import java.io.FileReader as FileReader
 import java.io.File as File
@@ -14,6 +19,7 @@ import java.util.Random as Random
 import dist.DiscreteDependencyTree as DiscreteDependencyTree
 import dist.DiscreteUniformDistribution as DiscreteUniformDistribution
 import dist.Distribution as Distribution
+import dist.DiscretePermutationDistribution as DiscretePermutationDistribution
 import opt.DiscreteChangeOneNeighbor as DiscreteChangeOneNeighbor
 import opt.EvaluationFunction as EvaluationFunction
 import opt.GenericHillClimbingProblem as GenericHillClimbingProblem
@@ -34,7 +40,15 @@ import opt.prob.GenericProbabilisticOptimizationProblem as GenericProbabilisticO
 import opt.prob.MIMIC as MIMIC
 import opt.prob.ProbabilisticOptimizationProblem as ProbabilisticOptimizationProblem
 import shared.FixedIterationTrainer as FixedIterationTrainer
-import opt.example.KnapsackEvaluationFunction as KnapsackEvaluationFunction
+import opt.example.TravelingSalesmanEvaluationFunction as TravelingSalesmanEvaluationFunction
+import opt.example.TravelingSalesmanRouteEvaluationFunction as TravelingSalesmanRouteEvaluationFunction
+import opt.SwapNeighbor as SwapNeighbor
+import opt.ga.SwapMutation as SwapMutation
+import opt.example.TravelingSalesmanCrossOver as TravelingSalesmanCrossOver
+import opt.example.TravelingSalesmanSortEvaluationFunction as TravelingSalesmanSortEvaluationFunction
+import shared.Instance as Instance
+import util.ABAGAILArrays as ABAGAILArrays
+
 from array import array
 
 # ---------------------------------------------------------------
@@ -52,81 +66,48 @@ def FixedIterTrainer(ef, oa, n_iters):
 
 
 def write_hist_csv(hist, oa_name):
-    with open('npsk_'+oa_name+'.csv', 'w') as f:
+    with open('tsm_'+oa_name+'.csv', 'w') as f:
         writer = csv.writer(f)
         writer.writerows(hist)
 
 # ---------------------------------------------------------------
-# Random number generator */
+# set N value.  This is the number of points
+N = 30
 random = Random()
-# The number of items
-NUM_ITEMS = 40
-# The number of copies each
-COPIES_EACH = 4
-# The maximum weight for a single element
-MAX_WEIGHT = 50
-# The maximum volume for a single element
-MAX_VOLUME = 50
-# The volume of the knapsack
-KNAPSACK_VOLUME = MAX_VOLUME * NUM_ITEMS * COPIES_EACH * .4
-
-# create copies
-fill = [COPIES_EACH] * NUM_ITEMS
-copies = array('i', fill)
-
-# create weights and volumes
-fill = [0] * NUM_ITEMS
-weights = array('d', fill)
-volumes = array('d', fill)
+N_ITERS = 100001
 random.setSeed(1)                      # !!!!!
-for i in range(0, NUM_ITEMS):
-    weights[i] = random.nextDouble() * MAX_WEIGHT
-    volumes[i] = random.nextDouble() * MAX_VOLUME
-
-
-# create range
-fill = [COPIES_EACH + 1] * NUM_ITEMS
-ranges = array('i', fill)
-ef = KnapsackEvaluationFunction(weights, volumes, KNAPSACK_VOLUME, copies)    # value, volume, max_volume, the number of copies per element
-odd = DiscreteUniformDistribution(ranges)
-nf = DiscreteChangeOneNeighbor(ranges)
-mf = DiscreteChangeOneMutation(ranges)
-cf = UniformCrossOver()
-df = DiscreteDependencyTree(.1, ranges)
-
+points = [[0 for x in xrange(2)] for x in xrange(N)]
+for i in range(0, len(points)):
+    points[i][0] = random.nextDouble()
+    points[i][1] = random.nextDouble()
 
 # ---------------------------------------------------------------
-N_ITERS = 100001
+ef = TravelingSalesmanRouteEvaluationFunction(points)
+odd = DiscretePermutationDistribution(N)
+nf = SwapNeighbor()
+mf = SwapMutation()
+cf = TravelingSalesmanCrossOver(ef)
 
-
-# # MIMIC
-# start = time.time()
-# fit_hist = []
-# for n_samples in range(100, 1000, 200):
-#     print n_samples
-#     pop = GenericProbabilisticOptimizationProblem(ef, odd, df)
-#     mimic = MIMIC(n_samples, 20, pop)
+# # GA
+# for tomate in [0.1, 0.3, 0.5, 0.7, 0.9]:
+#     print tomate
+#     fit_hist = []
+#     for i in xrange(10):
+#         gap = GenericGeneticAlgorithmProblem(ef, odd, mf, cf)
+#         ga = StandardGeneticAlgorithm(300, int(300*tomate), 30, gap)
 #
-#     fh = FixedIterTrainer(ef, mimic, N_ITERS)
-#     fit_hist.append(fh)
-#
-# write_hist_csv(fit_hist, 'fitness_mimic_n_samples')
-#
-# print time.time() - start, 'seconds'
-# # 1553 secs
+#         fh = FixedIterTrainer(ef, ga, N_ITERS)
+#         fit_hist.append(fh)
+#     write_hist_csv(fit_hist, 'fitness_ga_tomate_'+str(tomate))
 
 
-start = time.time()
-fit_hist = []
-for theta in [0.05, 0.10, 0.2, 0.3, 0.5]:
-    print theta
-    pop = GenericProbabilisticOptimizationProblem(ef, odd, df)
-    mimic = MIMIC(200, int(200*theta), pop)
+for tomute in [0.05, 0.1, 0.3, 0.5]:
+    print tomute
+    fit_hist = []
+    for i in xrange(10):
+        gap = GenericGeneticAlgorithmProblem(ef, odd, mf, cf)
+        ga = StandardGeneticAlgorithm(300, 30, int(300*tomute), gap)
 
-    fh = FixedIterTrainer(ef, mimic, N_ITERS)
-    fit_hist.append(fh)
-
-write_hist_csv(fit_hist, 'fitness_mimic_theta')
-
-print time.time() - start, 'seconds'
-# 979 secs
+        fh = FixedIterTrainer(ef, ga, N_ITERS)
+        fit_hist.append(fh)
+    write_hist_csv(fit_hist, 'fitness_ga_tomute_'+str(tomute))
