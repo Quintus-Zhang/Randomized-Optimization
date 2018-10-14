@@ -1,5 +1,5 @@
 import sys
-sys.path.append("/Users/Quintus/OneDrive/Code/python/omscs/machine learning/assignment 2/ABAGAIL/ABAGAIL.jar")
+sys.path.append("./ABAGAIL.jar")
 import os
 import time
 import csv
@@ -99,20 +99,20 @@ df = DiscreteDependencyTree(.1, ranges)
 N_ITERS = 100001
 
 
-# # MIMIC
-# start = time.time()
-# fit_hist = []
-# for n_samples in range(100, 1000, 200):
-#     print n_samples
-#     pop = GenericProbabilisticOptimizationProblem(ef, odd, df)
-#     mimic = MIMIC(n_samples, 20, pop)
-#
-#     fh = FixedIterTrainer(ef, mimic, N_ITERS)
-#     fit_hist.append(fh)
-#
-# write_hist_csv(fit_hist, 'fitness_mimic_n_samples')
-#
-# print time.time() - start, 'seconds'
+# MIMIC
+start = time.time()
+fit_hist = []
+for n_samples in range(100, 1000, 200):
+    print n_samples
+    pop = GenericProbabilisticOptimizationProblem(ef, odd, df)
+    mimic = MIMIC(n_samples, 20, pop)
+
+    fh = FixedIterTrainer(ef, mimic, N_ITERS)
+    fit_hist.append(fh)
+
+write_hist_csv(fit_hist, 'fitness_mimic_n_samples')
+
+print time.time() - start, 'seconds'
 # # 1553 secs
 
 

@@ -1,5 +1,5 @@
 import sys
-sys.path.append("/Users/Quintus/OneDrive/Code/python/omscs/machine learning/assignment 2/ABAGAIL/ABAGAIL.jar")
+sys.path.append("./ABAGAIL.jar")
 import os
 import csv
 import time
@@ -80,17 +80,17 @@ N_ITERS = 10001
 
 # SA
 
-# for cool_fac in [0.9, 0.92, 0.94, 0.96, 0.98]:
-#     print cool_fac
-#     fit_hist = []
-#     for i in xrange(30):
-#         hcp = GenericHillClimbingProblem(ef, odd, nf)
-#         sa = SimulatedAnnealing(1E12, cool_fac, hcp)
-#
-#         fh = FixedIterTrainer(ef, sa, N_ITERS)
-#         fit_hist.append(fh)
-#     write_hist_csv(fit_hist, 'fitness_sa_cf_'+str(cool_fac))
-#
+for cool_fac in [0.9, 0.92, 0.94, 0.96, 0.98]:
+    print cool_fac
+    fit_hist = []
+    for i in xrange(30):
+        hcp = GenericHillClimbingProblem(ef, odd, nf)
+        sa = SimulatedAnnealing(1E12, cool_fac, hcp)
+
+        fh = FixedIterTrainer(ef, sa, N_ITERS)
+        fit_hist.append(fh)
+    write_hist_csv(fit_hist, 'fitness_sa_cf_'+str(cool_fac))
+
 
 
 for power in range(1, 12, 2):

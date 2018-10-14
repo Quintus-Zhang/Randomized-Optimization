@@ -3,7 +3,7 @@
 # To make a plot of the route, write the points at these indexes
 # to a file and plot them in your favorite tool.
 import sys
-sys.path.append("/Users/Quintus/OneDrive/Code/python/omscs/machine learning/assignment 2/ABAGAIL/ABAGAIL.jar")
+sys.path.append("./ABAGAIL.jar")
 import os
 import time
 import csv
@@ -88,17 +88,17 @@ nf = SwapNeighbor()
 mf = SwapMutation()
 cf = TravelingSalesmanCrossOver(ef)
 
-# # GA
-# for tomate in [0.1, 0.3, 0.5, 0.7, 0.9]:
-#     print tomate
-#     fit_hist = []
-#     for i in xrange(10):
-#         gap = GenericGeneticAlgorithmProblem(ef, odd, mf, cf)
-#         ga = StandardGeneticAlgorithm(300, int(300*tomate), 30, gap)
-#
-#         fh = FixedIterTrainer(ef, ga, N_ITERS)
-#         fit_hist.append(fh)
-#     write_hist_csv(fit_hist, 'fitness_ga_tomate_'+str(tomate))
+# GA
+for tomate in [0.1, 0.3, 0.5, 0.7, 0.9]:
+    print tomate
+    fit_hist = []
+    for i in xrange(10):
+        gap = GenericGeneticAlgorithmProblem(ef, odd, mf, cf)
+        ga = StandardGeneticAlgorithm(300, int(300*tomate), 30, gap)
+
+        fh = FixedIterTrainer(ef, ga, N_ITERS)
+        fit_hist.append(fh)
+    write_hist_csv(fit_hist, 'fitness_ga_tomate_'+str(tomate))
 
 
 for tomute in [0.05, 0.1, 0.3, 0.5]:

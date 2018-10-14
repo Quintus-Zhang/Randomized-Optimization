@@ -1,5 +1,5 @@
 import sys
-sys.path.append("/Users/Quintus/OneDrive/Code/python/omscs/machine learning/assignment 2/ABAGAIL/ABAGAIL.jar")
+sys.path.append("./ABAGAIL.jar")
 
 import os
 import csv
@@ -35,7 +35,7 @@ INPUT_LAYER = 5
 HIDDEN_LAYER_1 = 20
 HIDDEN_LAYER_2 = 20
 OUTPUT_LAYER = 1
-TRAINING_ITERATIONS = 1000
+TRAINING_ITERATIONS = 3000
 
 
 def initialize_instances():
@@ -99,8 +99,8 @@ def main():
     networks = []  # BackPropagationNetwork
     nnop = []  # NeuralNetworkOptimizationProblem
     oa = []  # OptimizationAlgorithm
-    oa_names = ["RHC", "SA", "GA"]
-    # oa_names = ["SA"]
+    # oa_names = ["RHC", "SA", "GA"]
+    oa_names = ["SA"]
     results = ""
 
     for name in oa_names:
@@ -112,9 +112,9 @@ def main():
         networks.append(classification_network)
         nnop.append(NeuralNetworkOptimizationProblem(data_set, classification_network, measure))
 
-    oa.append(RandomizedHillClimbing(nnop[0]))
-    oa.append(SimulatedAnnealing(1E11, .95, nnop[1]))
-    oa.append(StandardGeneticAlgorithm(300, 150, 15, nnop[2]))
+    # oa.append(RandomizedHillClimbing(nnop[0]))
+    oa.append(SimulatedAnnealing(1E11, .8, nnop[0]))
+    # oa.append(StandardGeneticAlgorithm(300, 150, 15, nnop[2]))
 
     for i, name in enumerate(oa_names):
         start = time.time()
@@ -126,7 +126,7 @@ def main():
         training_time = end - start
 
         # output error history
-        EH_FILE = name+'.csv'
+        EH_FILE = name+'_3000_0.8.csv'
         with open(EH_FILE, 'w') as f:
             writer = csv.writer(f)
             writer.writerows(err_hist)

@@ -1,5 +1,5 @@
 import sys
-sys.path.append("/Users/Quintus/OneDrive/Code/python/omscs/machine learning/assignment 2/ABAGAIL/ABAGAIL.jar")
+sys.path.append("./ABAGAIL.jar")
 import os
 import time
 import csv
